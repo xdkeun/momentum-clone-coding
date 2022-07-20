@@ -1,19 +1,32 @@
-const loginForm = document.getElementById("login-form");
+const loginForm = document.querySelector("#login-form");
 const loginInput = loginForm.querySelector("input");
 const loginButton = loginForm.querySelector("button");
+const greeting = document.querySelector("#greeting");
+const link = document.querySelector("a");
+const HIDDEN_CLASSNAME = "hidden"
+const USERNAME_KEY = "username";
 
 function onLoginSubmit(event){
     event.preventDefault(); // 브라우저의 기본 동작을 막아줌
-    console.log(loginInput.value);
-    // if (!username){
-    //     alert("please write your name");
-    // }
-    // else if(username.length > 15){
-    //     alert("your name is too long")
-    // }
-    // else{
-    //     alert("hello " + username + "!");
-    // }
+    loginForm.classList.add(HIDDEN_CLASSNAME)
+    const username = loginInput.value;
+    localStorage.setItem(USERNAME_KEY, username);
+    // localStorage.getItem("username");
+    // greeting.innerText = "hello " + username;
+    paintGreetings(username);
 }
 
-loginForm.addEventListener("submit", onLoginSubmit);
+function paintGreetings(username){
+    greeting.classList.remove(HIDDEN_CLASSNAME);
+    greeting.innerText = `hello ${username}`;
+}
+
+const savedUserName = localStorage.getItem(USERNAME_KEY);
+
+    if(savedUserName === null){
+        loginForm.classList.remove(HIDDEN_CLASSNAME);
+        loginForm.addEventListener("submit", onLoginSubmit);
+    }
+    else{
+        paintGreetings(savedUserName);
+    }
